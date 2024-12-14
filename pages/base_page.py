@@ -2,6 +2,7 @@ import data
 
 from playwright.sync_api import Page, expect
 
+from locators.dashboard_page_locators import DashboardPageLocators
 from locators.login_page_locators import LoginPageLocators
 from locators.main_page_locators import MainPageLocators
 
@@ -12,6 +13,7 @@ class BasePage:
         self.expect = expect
         self.main_page_locators = MainPageLocators()
         self.login_page_locators = LoginPageLocators()
+        self.dashboard_page_locators = DashboardPageLocators()
 
     def get_page(self, url):
         self.page.goto(url)

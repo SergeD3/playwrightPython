@@ -8,4 +8,4 @@ class LoginPageLocators:
     LOGIN_BUTTON = "form-login-submitButton"
 
     # xPath or CSS
-    ERROR_ALERT_MESSAGE = "//div[@class='ant-alert-message']"
+    ERROR_ALERT_MESSAGE = "xpath=//div[@class='ant-alert-message']"

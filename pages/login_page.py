@@ -1,19 +1,29 @@
 import data
 import allure
+import os
 
+from dotenv import load_dotenv
 from pages.base_page import BasePage
-from playwright.sync_api import sync_playwright
 
 
 class LoginPage(BasePage):
+    load_dotenv()
 
     @allure.step("Перехожу на страницу аутентификации")
     def get_login_page(self):
-        self.get_page(data.LOGIN_PAGE)
+        self.get_page(f"{os.getenv('BASE_URL')}{data.LOGIN_PAGE}")
 
     @allure.step("Проверяю, что страница аутентификации открыта")
     def is_login_page_opened(self):
-        self.expect(self.page).to_have_url(data.LOGIN_PAGE)
+        expected_url = f"{os.getenv('BASE_URL')}{data.LOGIN_PAGE}"
+
+        self.expect(self.page).to_have_url(expected_url)
+
+    def is_authorization_successful(self):
+        expected_url = f"{os.getenv('BASE_URL')}{data.DASHBOARD_PAGE}"
+
+        self.expect(self.page).to_have_url(expected_url)
+        self.expect(self.find_element_by_locator(self.dashboard_page_locators.NO_WIDGETS_IMG)).to_be_visible()
 
     @allure.step("Заполняю поле логин")
     def fill_username(self, username):
