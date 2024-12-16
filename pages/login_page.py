@@ -9,6 +9,9 @@ from pages.base_page import BasePage
 class LoginPage(BasePage):
     load_dotenv()
 
+    def __init__(self, chrome):
+        super().__init__(chrome)
+
     @allure.step("Перехожу на страницу аутентификации")
     def get_login_page(self):
         self.get_page(f"{os.getenv('BASE_URL')}{data.LOGIN_PAGE}")

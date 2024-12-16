@@ -27,6 +27,9 @@ class BasePage:
     def find_element_by_test_id(self, test_id: str):
         return self.page.get_by_test_id(test_id)
 
+    def find_element_by_role(self, role: str, name: str = ""):
+        return self.page.get_by_role(role=role, name=name)
+
     def left_click_on_button(self, test_id=None, locator=None):
         if test_id:
             self.find_element_by_test_id(test_id).click()
@@ -42,3 +45,20 @@ class BasePage:
             self.find_element_by_test_id(test_id=test_id).fill(text)
         else:
             print("Необходимо указать locator или test_id")
+
+    def get_text_from_element(self, locator=None, test_id=None):
+        if locator:
+            return self.find_element_by_locator(locator).inner_text()
+        elif test_id:
+            return self.find_element_by_test_id(test_id).inner_text()
+        else:
+            print("Необходимо указать locator или test_id")
+
+    def get_element_attribute(self, attr, locator=None, test_id=None):
+        if locator:
+            return self.find_element_by_locator(locator).get_attribute(name=attr)
+        elif test_id:
+            return self.find_element_by_test_id(test_id).get_attribute(name=attr)
+        else:
+            print("Необходимо указать locator или test_id")
+    
