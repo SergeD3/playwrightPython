@@ -8,5 +8,3 @@ class NavigationTreePage(BasePage):
 
     def get_tree_element(self):
         pass
-
-

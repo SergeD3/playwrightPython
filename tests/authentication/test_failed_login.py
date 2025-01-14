@@ -1,6 +1,4 @@
-import pytest
-# import os
-
+from pytest import mark
 from pages.login_page import LoginPage
 from allure import title, feature, step
 
@@ -9,7 +7,7 @@ class TestFailedLogin:
 
     @feature("Authentication")
     @title("Проверяю, что при вводе невалидного логина или пароля попытка авторизоваться возвращает ошибку")
-    @pytest.mark.parametrize('username, password', [])
+    @mark.parametrize('username, password', [])
     def test_login_page_invalid_credentials(self, page, username, password):
         username = username
         password = password

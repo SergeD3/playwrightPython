@@ -2,7 +2,6 @@ import re
 import allure
 
 from playwright.sync_api import Page, expect
-from helpers import common_helper
 
 
 class BasePage:
@@ -79,7 +78,7 @@ class BasePage:
         )
 
     def take_element_screenshot(self, locator: str = None):
-        name = helper.get_screenshot_date()
+        name = ""
 
         self.find_element_by(locator=locator).screenshot(path=f"screenshots/{name}-element.jpeg")
 

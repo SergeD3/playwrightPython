@@ -1,15 +1,13 @@
 from allure import step
-from dotenv import load_dotenv
 from locators.login_page_locators import LoginPageLocators
 from pages.base_page import BasePage
 
 
 class LoginPage(BasePage):
-    load_dotenv()
 
     def __init__(self, chrome):
         super().__init__(chrome)
-        self.login_page_locators = LoginPageLocators()
+        self.lp_locators = LoginPageLocators()
 
     @step("Перехожу на страницу аутентификации")
     def get_login_page(self):
