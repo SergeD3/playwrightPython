@@ -18,9 +18,8 @@ from src.utils.logging import log_errors
 class TaskPage(BasePage):
     common_locators = CommonLocators()
     task_locators = TasksPageLocators()
-    context = "TaskPage"
-    
-    tasks_path = "#/tasks"
+    context = None
+    tasks_path = None
 
     def __init__(self, page: Page):
         super().__init__(page)
@@ -71,18 +70,13 @@ class TaskPage(BasePage):
     @step("Open creation form")
     @log_errors(context=f"{context}.open_creation_form")
     def open_creation_form(self) -> None:
-        # 'More' menu
-        
         self.open_tasks_page_via_more_menu()
-        
-        # 'Tasks' menu
-        
         self.menu_page.tasks_menu.click_on_menu_item()
         self.menu_page.create_tasks_item.click_on_menu_item()
 
     @step("Opening tasks page via more menu")
     @log_errors(context=f"{context}.open_tasks_page_via_more_menu")
-    def open_tasks_page_via_more_menu(self):
+    def open_tasks_page_via_more_menu(self) -> None:
         self.menu_page.more_menu.click_on_menu_item()
         self.menu_page.tasks_in_more_menu.click_on_menu_item()
         self.page.wait_for_url(url=f"{BASE_URL}/{self.tasks_path}")
@@ -141,5 +135,5 @@ class TaskPage(BasePage):
 
     @step("Expanding security group subpanel")
     @log_errors(context=f"{context}.expand_security_group_sp")
-    def expand_security_group_sp(self):
+    def expand_security_group_sp(self) -> None:
         self.security_group.click_on()
