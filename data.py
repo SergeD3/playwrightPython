@@ -1,2 +1,4 @@
-# параметры для выноса в .env
-LOGIN_PAGE = ""
+LANGUAGE = None
+LOGIN_PAGE = None
+DASHBOARD_PAGE = None
+SALES_PAGE = None

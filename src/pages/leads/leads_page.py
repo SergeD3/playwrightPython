@@ -1,0 +1,125 @@
+from allure import step
+
+from src.checks.common.is_element_visible import IsElementVisible
+from src.pages.menu.menu_page import MenuPage
+from src.actions.base_fill_action import BaseFillAction
+from src.actions.base_click_action import BaseClick
+from src.locators.leads.leads_page_locators import LeadsPageLocators
+from src.locators.common_locators import CommonLocators
+from src.actions.take_screenshot_action import page_screenshot
+from src.utils.logging import log_errors
+from src.checks.common.is_element_contains_text import IsElementContainsText
+from playwright.sync_api import Page
+
+
+class LeadsPage:
+    context = "LeadsPage"
+    leads_page_loc = LeadsPageLocators()
+
+    def __init__(self, page: Page):
+        self.page = page
+        self.common_locators = CommonLocators()
+        self.menu_page = MenuPage(page)
+
+        self.first_name = BaseFillAction(page=self.page, locator=self.common_locators.FIRST_NAME)
+        self.first_name_check = IsElementContainsText(page=self.page, locator=self.common_locators.FIRST_NAME)
+        
+        self.last_name = BaseFillAction(page=self.page, locator=self.common_locators.LAST_NAME)
+        self.last_name_check = IsElementContainsText(page=self.page, locator=self.common_locators.LAST_NAME)
+        
+        self.job_title = BaseFillAction(page=self.page, locator=self.common_locators.JOB_TITLE)
+        self.job_title_check = IsElementContainsText(page=self.page, locator=self.common_locators.JOB_TITLE)
+        
+        self.account_name = BaseFillAction(page=self.page, locator=self.leads_page_loc.ACCOUNT_NAME)
+        self.account_name_check = IsElementContainsText(page=self.page, locator=self.leads_page_loc.ACCOUNT_NAME)
+        
+        self.email = BaseFillAction(page=self.page, locator=self.common_locators.EMAIL)
+        self.email_check = IsElementContainsText(page=self.page, locator=self.common_locators.EMAIL)
+        
+        self.mobile_phone = BaseFillAction(page=self.page, locator=self.common_locators.MOBILE_PHONE)
+        self.mobile_phone_check = IsElementContainsText(page=self.page, locator=self.common_locators.MOBILE_PHONE)
+        
+        self.create_title = IsElementVisible(page=self.page, locator=self.common_locators.CREATE_TITLE)
+
+        # buttons etc.
+
+        self.save_btn = BaseClick(
+            page=page, locator=self.common_locators.SAVE_BTN, log_name=__name__
+        )
+        self.save_btn_visibility = IsElementVisible(
+            page=page, locator=self.common_locators.SAVE_BTN
+        )
+
+        self.edit_btn = BaseClick(
+            page=page, locator=self.common_locators.EDIT_BUTTON, log_name=__name__
+        )
+        
+        # Subpanels
+        
+        self.security_group = BaseClick(page=self.page, locator=self.common_locators.SECURITY_GROUP_SP)
+
+    @step("Open lead creation form")
+    @log_errors(context=f"{context}.open_lead_creation_form")
+    def open_lead_creation_form(self):
+        self.menu_page.leads_menu.click_on_menu_item()
+        self.menu_page.create_lead_item.click_on_menu_item()
+
+    @step("Filling form fields")
+    @log_errors(context=f"{context}.fill_form_fields")
+    def fill_form_fields(self, test_data: dict) -> None:
+        with step("Filling 'First Name'"):
+            self.first_name.fill_input_field(test_data.get('first_name'))
+
+        with step("Filling 'Last Name'"):
+            self.last_name.fill_input_field(test_data.get('last_name'))
+
+        with step("Filling 'Job Title'"):
+            self.job_title.fill_input_field(test_data.get('job_title'))
+        
+        with step("Filling 'Account Name'"):
+            self.account_name.fill_input_field(test_data.get('account_name'))
+        
+        with step("Filling 'Email'"):
+            self.email.fill_input_field(test_data.get('email'))
+        
+        with step("Filling 'Mobile Phone'"):
+            self.mobile_phone.fill_input_field(test_data.get('mobile_phone'))
+
+    @step("Click on 'Save' button")
+    @log_errors(context=f"{context}.click_on_save_button")
+    def click_on_save_button(self):
+        self.save_btn.click_on()
+
+    @step("Checking that the account has been created")
+    @log_errors(context=f"{context}.is_lead_created")
+    def is_lead_created(self, test_data: dict) -> None:        
+        with step("Checking 'First Name'"):
+            self.first_name_check.is_input_contains_value(expected_value=test_data.get('first_name'))
+        
+        with step("Checking 'Last Name'"):
+            self.last_name_check.is_input_contains_value(expected_value=test_data.get('last_name'))
+        
+        with step("Checking 'Job Title'"):
+            self.job_title_check.is_input_contains_value(expected_value=test_data.get('job_title'))
+        
+        with step("Checking 'Account Name'"):
+            self.account_name_check.is_input_contains_value(expected_value=test_data.get('account_name'))
+        
+        with step("Checking 'Email'"):
+            self.email_check.is_input_contains_value(expected_value=test_data.get('email'))
+        
+        with step("Checking 'Mobile Phone'"):
+            self.mobile_phone_check.is_input_contains_value(expected_value=test_data.get('mobile_phone'))
+
+        page_screenshot(self.page)
+
+    @step("Opening entity in edit mode")
+    @log_errors(context=f"{context}.open_entity_in_edit_mode")
+    def open_entity_in_edit_mode(self) -> None:
+        self.expand_security_group_sp()
+        self.edit_btn.click_on()
+
+    @step("Expanding security group subpanel")
+    @log_errors(context=f"{context}.expand_security_group_sp")
+    def expand_security_group_sp(self):
+        self.security_group.click_on()
