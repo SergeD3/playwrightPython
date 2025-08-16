@@ -17,7 +17,8 @@ class BaseFindLocator:
 
     @log_errors(context=f"{context}.find_element_by_locator", message="find element")
     def find_element_by_locator(self) -> Locator:
-        """
+        """BaseFindLocator.find_element_by_locator
+
         This method allows to find an element by xpath or css.
         """
         self.wait_element.wait_for_element()

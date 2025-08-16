@@ -18,5 +18,10 @@ class BaseFillAction:
 
     @log_errors(context=f"{context}.fill_input_field", message="input text")
     def fill_input_field(self, text: str) -> None:
+        """BaseFillAction.fill_input_field
+
+                The method fills in a simple text or textarea field.
+        """
+
         self.wait_element.wait_for_element()
         self.find_element.find_element_by_locator().fill(value=str(text))

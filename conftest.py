@@ -18,9 +18,7 @@ logger = logging.getLogger(__name__)
 @pytest.fixture
 def chrome():
     with sync_playwright() as p:
-        headless_mode: bool = True if HEADLESS == 'yes' else False
-
-        browser = p.chromium.launch(headless=headless_mode)
+        browser = p.chromium.launch(headless=lambda HEADLESS: True if HEADLESS == 'yes' else False)
         context = browser.new_context()
         page = context.new_page()
 

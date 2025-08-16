@@ -18,6 +18,19 @@ class BaseSelectOption:
 
     @log_errors(context=f"{context}.select_option", message="select option")
     def select_option(self, value: str = None, index: int = None) -> list[str]:
+        """BaseSelectOption.select_option
+
+        Select the option.
+
+        Parameters
+        ----------
+        value : str
+            Options to select by value.
+        index: int
+            Options to select by index.
+
+        """
+
         self.wait_element.wait_for_element()
 
         if value:
